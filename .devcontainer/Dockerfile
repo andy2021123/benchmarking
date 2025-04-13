@@ -15,3 +15,5 @@ RUN \
   ./install/duplicati.sh && \
   ./install/kopia.sh && \
   ./install/restic.sh
+
+ENV KOPIA_CHECK_FOR_UPDATES=false
