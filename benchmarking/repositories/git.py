@@ -8,7 +8,7 @@ from ._constants import GIT_DIR
 class GitRepo:
     def __init__(self, url: str):
         self.name = os.path.basename(url)
-        self.path = os.path.join(GIT_DIR, self.name)
+        self.path = os.path.abspath(os.path.join(GIT_DIR, self.name))
         if os.path.exists(os.path.join(self.path, ".git")):
             self.repo = Repo(self.path)
         else:

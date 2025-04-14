@@ -18,7 +18,7 @@ class ResticRepo(BackupRepo):
             "--insecure-no-password",
             "--quiet",
         ]
-        if overwrite:
+        if overwrite and os.path.exists(self.path):
             shutil.rmtree(self.path)
         if not os.path.exists(self.path):
             subprocess.run([*self._cmd_prefix, "init"])
@@ -27,15 +27,8 @@ class ResticRepo(BackupRepo):
 
     def backup(self, source: str, tag: str):
         subprocess.run(
-            [
-                *self._cmd_prefix,
-                "backup",
-                "--tag",
-                tag,
-                "--exclude",
-                ".git",
-                source,
-            ]
+            [*self._cmd_prefix, "backup", "--tag", tag, "--exclude", ".git", "."],
+            cwd=source,
         )
 
     def restore(self, tag: str, target: str):
@@ -48,7 +41,9 @@ class ResticRepo(BackupRepo):
                 "--tag",
                 tag,
                 "latest",
-            ]
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
     def size(self, mode: Literal["raw-data", "restore-size"] = "raw-data") -> str:
