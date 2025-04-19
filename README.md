@@ -4,6 +4,5 @@ This repository is for benchmarking various backup tools. The goal is to provide
 
 ### List of backup tools
 - Restic
-- Duplicati
 - BorgBackup
 - Kopia
